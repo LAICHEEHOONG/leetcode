@@ -1,0 +1,23 @@
+{
+  "name": "leetcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LAICHEEHOONG/leetcode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LAICHEEHOONG/leetcode/issues"
+  },
+  "homepage": "https://github.com/LAICHEEHOONG/leetcode#readme",
+  "dependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
