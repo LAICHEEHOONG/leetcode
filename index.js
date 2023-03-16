@@ -23,86 +23,97 @@
 
 
 
-// return array, after cut
-const indexForCutFn = (arr) => {
+//input string find parenthese pair index, return [n, n+1], if
+const indexForCutFn = (str) => {
     let indexForCut = [];
-    for(let i = 0; i < arr.length; i++) {
-        if(arr[i] === '(') {
-            if(arr[i+1] === ')') {
-                indexForCut = [i, i+1];
-            }   
-        }
-        if(arr[i] === '[') {
-            if(arr[i+1] === ']') {
-                indexForCut = [i, i+1];
-            }   
-        }
-        if(arr[i] === '{') {
-            if(arr[i+1] === '}') {
-                indexForCut = [i, i+1];
-            }   
-        }
+ 
+
+    if(str.length <= 1) {
+        indexForCut = ['error'] 
+        console.log('indexForCut', indexForCut)
+        return indexForCut
     }
+
+    for(let i = 0; i < str.length; i++) {
+            if(str[i] === '(') {
+                if(str[i+1] === ')') {
+                    indexForCut = [i, i+1];
+                } else {
+                    indexForCut = ['error'];
+                }  
+            }
+            if(str[i] === '[') {
+                if(str[i+1] === ']') {
+                    indexForCut = [i, i+1];
+                }   else {
+                    indexForCut = ['error'];
+                }  
+            }
+            if(str[i] === '{') {
+                if(str[i+1] === '}') {
+                    indexForCut = [i, i+1];
+                }   else {
+                    indexForCut = ['error'];
+                }  
+            }
+    }
+
+    
     console.log('indexForCut', indexForCut)
     return indexForCut;
 }
+// indexForCutFn("0")
 
 
-
+// input string and indexForCutFn, return after cut string
 const cutStrFn = (str, cut) => {
- 
-    const afterCut = `${str.slice(0,cut[0])}${str.slice(cut[1], str.length)}`;
-    console.log(afterCut)// heo
-    // return afterCut;
+    const afterCut = `${str.slice(0,cut[0])}${str.slice(cut[1] + 1, str.length)}`;
+    // console.log('afterCut', afterCut)// heo
+    return afterCut;
 
 }   
+// cutStrFn('[()]', [1,2])
 // cutStrFn("hello", [2,3])//
-
-
 
 const isValid = (s) => {
 
-    // if s.length <= 1 return false
     if(s.length <= 1) {
         console.log('false')
         return false;
     }
-    // create resultArr = s, result = true
     let resultStr = s;
     let result = true;
-    
-    // create a funtion name it indexForCutFn, and control result 
-    
 
-    // if resultArr.length > 0
-    if(resultStr.length > 0) {
-        let indexForCut = indexForCutFn(resultStr);
-        if(indexForCut.length > 0) {
-        
+    for(let i = 0; i < s.length; i++) {
+       
+        if(resultStr.length >= 0 && result) {
+            let cutIndex = indexForCutFn(resultStr);
+            if(cutIndex[0] === 'error') {
+                result = false
+            } else {
+                resultStr = cutStrFn(resultStr,cutIndex);
+                result = true;
+            }
+    
+        } else {
+            result = false;
         }
+   
     }
 
-    // loop resultArr, compare s[n] and s[n+1]
-    //  if s[n] = (, s[n+1] = )
-    //  if s[n] = [, s[n+1] = ]
-    //  if s[n] = {, s[n+1] = }
-    // if match cut the match item 
-
-    // let resultArr = new array, result = true && resultArr.length > 0 run again matchingFn
-
-
-    // if resultArr.length = 0, result = true, return result
-    // if result = false , return result
-
-
+    console.log(result);
+    return result;
 
 }
+
+
+
 
 
 // isValid("()"); // true
 // isValid("()[]{}"); // true
 // isValid("(]"); //false
-// isValid(")]"); //false
+isValid(")]"); //false
 // isValid("{[]}"); // true
 // isValid("{[]}{()}"); // true
 
