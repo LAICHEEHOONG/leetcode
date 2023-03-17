@@ -1,112 +1,33 @@
-// Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+function isValid(s) {
 
-// An input string is valid if:
-
-// Open brackets must be closed by the same type of brackets.
-// Open brackets must be closed in the correct order.
-// Every close bracket has a corresponding open bracket of the same type.
-
-
-// Example 1:
-
-// Input: s = "()"
-// Output: true
-// Example 2:
-
-// Input: s = "()[]{}"
-// Output: true
-// Example 3:
-
-// Input: s = "(]"
-// Output: false
-
-
-
-
-
-const indexForCutFn = (str) => {
-    let indexForCut = [];
-
-    if(str.length === 0) {
-        indexForCut = ['empty'];
-        return indexForCut;
-    }
-
-    if (str.length === 1) {
-        indexForCut = ['error']
-        return indexForCut
-    }
-
-    for (let i = 0; i < str.length; i++) {
-        if (str[i] === '(') {
-            if (str[i + 1] === ')') {
-                indexForCut = [i, i + 1];
-            } else {
-                indexForCut = ['error'];
-            }
-        }
-        if (str[i] === '[') {
-            if (str[i + 1] === ']') {
-                indexForCut = [i, i + 1];
-            } else {
-                indexForCut = ['error'];
-            }
-        }
-        if (str[i] === '{') {
-            if (str[i + 1] === '}') {
-                indexForCut = [i, i + 1];
-            } else {
-                indexForCut = ['error'];
-            }
-        }
-
-    }
-
-    if(indexForCut.length === 0) {
-        indexForCut = ['error']
-    }
-
-    return indexForCut;
-}
-
-const cutStrFn = (str, cut) => {
-    const afterCut = `${str.slice(0, cut[0])}${str.slice(cut[1] + 1, str.length)}`;
-    return afterCut;
-}
-
-const isValid = (s) => {
-    if (s.length <= 1) {
-        console.log('false')
+    if(s.length === 1) {
+        console.log(false);
         return false;
     }
-    let resultStr = s;
-    let result = true;
+
+    let stack = [];
 
     for (let i = 0; i < s.length; i++) {
-        if(result && resultStr.length > 0 ) {
-            let indexCut = indexForCutFn(resultStr);
-            if(indexCut[0] === 'error') {
-                result = false;
-                resultStr = cutStrFn(resultStr, indexCut)
-            } else if(indexCut[0] === 'empty') {
-                result = true;
-                resultStr = cutStrFn(resultStr, indexCut);
-            } else {
-                result = true;
-                resultStr = cutStrFn(resultStr, indexCut);
-            }
-     
+        let c = s.charAt(i);
+
+        if (c == '(' || c == '{' || c == '[') {
+            stack.push(c);
+        } else if (c == ')' && stack.length > 0 && stack[stack.length - 1] == '(') {
+            stack.pop();
+        } else if (c == '}' && stack.length > 0 && stack[stack.length - 1] == '{') {
+            stack.pop();
+        } else if (c == ']' && stack.length > 0 && stack[stack.length - 1] == '[') {
+            stack.pop();
+        } else {
+            console.log(false);
+            return false;
         }
     }
-
-    console.log(result);
-    return  result;
-
+    console.log(true)
+    return true
 }
 
-
-
-
+isValid("[");// fase
 isValid("()"); // true
 isValid("()[]{}"); // true
 isValid("(]"); //false
@@ -115,4 +36,3 @@ isValid("{[]}"); // true
 isValid("{[]}{()}"); // true
 isValid("{[]}{({)}"); // false
 isValid("())[]{}"); // false
-
