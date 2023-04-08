@@ -1,18 +1,12 @@
 //15. 3Sum
 
 const threeSum = (nums) => {
-    let compilation = allCompilation(nums);
-    let sumZero = filterSum(compilation);
-    let result = fileterSame(sumZero);
-
+    let result = fileterSame(filterSum(allCompilation(nums)));
     return result;
 };
 
 // nums => [0, 1, -1, 0];
 // allCompilation(nums) => [[0,1,-1], ..., [1,0,0], ...]
-
-
-
 function allCompilation(arr) {
     let loop = arr.length;
     let compilation = [];
@@ -54,11 +48,6 @@ function allCompilation(arr) {
     return compilation;
 }
 
-//allCompilation([-1, 0, 1, 2, -1, -4]); //[0,1,-1]
-
-
-
-
 // filterSum(allCompilation(arr)) => [[0,1,-1], ...]
 function filterSum(arr) {
     let filterArr = [];
@@ -71,22 +60,10 @@ function filterSum(arr) {
             filterArr.push(arr1);
         }
     })
-    console.log(filterArr);
+    // console.log(filterArr);
     return filterArr;
 }
 // filterSum(allCompilation([-1, 0, 1, 2, -1, -4]))
-
-// fileterSame(filterSum(arr)) => [[0,1,-1], [2,-1, -1]]
-function fileterSame(arr) {
-    let arrBefore = arr;
-    let result = [];
-    let sorted = sortArr(arr);
-    let match1 = findMatch(sorted);
-    return ''
-}
-
-fileterSame(filterSum(allCompilation([-1, 0, 1, 2, -1, -4])));
-
 
 function sortArr(arr) {
     let sorted = [];
@@ -94,44 +71,107 @@ function sortArr(arr) {
         let sort = arr1.sort((a, b) => a - b);
         sorted.push(sort)
     })
-    console.log(sorted);
+    // console.log(sorted);
     return sorted;
 }
 
 function findMatch(arr) {
-    let ori = arr;
-    let cut = [];
     let match = true;
+    let boolArr = [];
     let result = [];
 
-        for (let i = 0; i < arr.length; i++) {
-            let compare = arr[i];
-            for (let j = 0; j < 3; j++) {
-                if (compare[j] === arr[0][j]) {
-                    if (match) {
-                        match = true;
-                    } else {
-                        match = false;
-                    }
+    for (let i = 0; i < arr.length; i++) {
+        let compare = arr[i];
+        for (let j = 0; j < 3; j++) {
+            if (compare[j] === arr[0][j]) {
+                if (match) {
+                    match = true;
                 } else {
                     match = false;
                 }
-            }
-    
-            cut.push(match);
-            match = true;
-    
-        }
-    
-        for (let k = 0; k < arr.length; k++) {
-            if (!cut[k]) {
-                result.push(arr[k]);
+            } else {
+                match = false;
             }
         }
-    
+        // console.log(match)
+        boolArr.push(match)
+        match = true;
+    }
 
+    result.push(arr[0]);
 
-
-    console.log(result, 'result');
+    for(let z = 0; z < arr.length; z++) {
+       if(!boolArr[z]) {
+        result.push(arr[z])
+       }
+    }
+    // console.log(result);
+    return result;
 
 }
+
+// fileterSame(filterSum(arr)) => [[0,1,-1], [2,-1, -1]]
+function fileterSame(arr) {
+    let sorted = sortArr(arr);
+    let loop;
+    if(sorted.length === 0 || sorted.length === 1) {
+        console.log(sorted);
+        return sorted;
+    }
+
+    let match = findMatch(sorted);
+    loop = match.length;
+    let rotateArr = rotate(match);
+
+    for(let i = 0; i < loop; i++) {
+        match = findMatch(rotateArr);
+        rotateArr = rotate(match)
+    }
+
+    console.log(match);
+
+    return match;
+}
+
+function rotate(arr) {
+    let rotateArr = []
+    for(let i = 0; i < arr.length; i++) {
+        let sum = i + 1;
+        if(sum > arr.length - 1) {
+            rotateArr.push(arr[arr.length - sum])
+        } else {
+            rotateArr.push(arr[sum])
+        }
+     
+    }
+
+    return rotateArr;
+}
+
+
+
+// fileterSame(filterSum(allCompilation([-1, 0, 1, 2, -1, -4])));// [[-1,0,1], [-1,-1,2]]
+// fileterSame(filterSum(allCompilation([-1,0,1,2,-1,-4])));// [[-1,-1,2],[-1,0,1]]
+// fileterSame(filterSum(allCompilation([0,1,1])));// []
+// fileterSame(filterSum(allCompilation([0,0,0])));// [[0,0,0]]
+
+// threeSum([-2,0,1,1,2]);//[[-2,0,2],[-2,1,1]]
+// threeSum([-1, 0, 1, 2, -1, -4]);// [[-1,0,1], [-1,-1,2]]
+// threeSum([-1,0,1,2,-1,-4]);// [[-1,-1,2],[-1,0,1]]
+// threeSum([0,1,1]);// []
+// threeSum([0,0,0]);// [[0,0,0]]
+threeSum([-1,0,1,2,-1,-4,-2,-3,3,0,4]);
+/** 
+[
+    [-4,0,4],
+    [-4,1,3],
+    [-3,-1,4],
+    [-3,0,3],
+    [-3,1,2],
+    [-2,-1,3],
+    [-2,0,2],
+    [-1,-1,2],
+    [-1,0,1]]
+*/
+//
+
