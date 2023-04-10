@@ -1,52 +1,11 @@
 //15. 3Sum
 
-const threeSum = (nums) => {
+
+function threeSum(nums) {
     let result = fileterSame(filterSum(allCompilation(nums)));
+    // console.log(result)
     return result;
 };
-
-// nums => [0, 1, -1, 0];
-// allCompilation(nums) => [[0,1,-1], ..., [1,0,0], ...]
-function allCompilation(arr) {
-    let loop = arr.length;
-    let compilation = [];
-    let three = [];
-    let second = 1;
-    let third = 2;
-
-    for (let i = 0; i < loop; i++) {
-        second = i + 1;
-        third = i + 2;
-
-        if (second > loop - 1) {
-            second = Math.abs(loop - second)
-        }
-        if (third > loop - 1) {
-            third = Math.abs(loop - third);
-        }
-        for (let j = 0; j < loop - 2; j++) {
-            three.push(arr[i]);
-            three.push(arr[second]);
-            three.push(arr[third]);
-
-            second++;
-            third++;
-
-            if (second > loop - 1) {
-                second = Math.abs(loop - second)
-            }
-            if (third > loop - 1) {
-                third = Math.abs(loop - third);
-            }
-
-            compilation.push(three);
-            three = [];
-        }
-    }
-
-    console.log(compilation);
-    return compilation;
-}
 
 // filterSum(allCompilation(arr)) => [[0,1,-1], ...]
 function filterSum(arr) {
@@ -127,9 +86,6 @@ function fileterSame(arr) {
         match = findMatch(rotateArr);
         rotateArr = rotate(match)
     }
-
-    console.log(match);
-
     return match;
 }
 
@@ -147,115 +103,37 @@ function rotate(arr) {
     return rotateArr;
 }
 
-
-
-// fileterSame(filterSum(allCompilation([-1, 0, 1, 2, -1, -4])));// [[-1,0,1], [-1,-1,2]]
-// fileterSame(filterSum(allCompilation([-1,0,1,2,-1,-4])));// [[-1,-1,2],[-1,0,1]]
-// fileterSame(filterSum(allCompilation([0,1,1])));// []
-// fileterSame(filterSum(allCompilation([0,0,0])));// [[0,0,0]]
-
-// threeSum([-2,0,1,1,2]);//[[-2,0,2],[-2,1,1]]
-// threeSum([-1, 0, 1, 2, -1, -4]);// [[-1,0,1], [-1,-1,2]]
-// threeSum([-1,0,1,2,-1,-4]);// [[-1,-1,2],[-1,0,1]]
-// threeSum([0,1,1]);// []
-// threeSum([0,0,0]);// [[0,0,0]]
-// threeSum([-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]);
-/** 
-[
-    [-4,0,4],
-    [-4,1,3],
-    [-3,-1,4],
-    [-3,0,3],
-    [-3,1,2],
-    [-2,-1,3],
-    [-2,0,2],
-    [-1,-1,2],
-    [-1,0,1]]
-*/
-//
-
-
-// function allCompilation2(arr) {
-//     const ori = arr;
-//     const result = [];
-//     let carry3num = [];
-//     let carry1 = [];
-//     let carry2 = [];
-//     let carry3 = [];
-
-//     for (let k = 0; k < ori.length; k++) {
-//         loopPush(carry1, k, ori);
-
-//         for (let j = 0; j < ori.length - 1; j++) {
-//             let sum2 = j + 1;
-//             loopPush(carry2, sum2, ori);
-
-//             for (let i = 0; i < ori.length - 1; i++) {
-
-//                 let sum3 = i + 2;
-
-//                 loopPush(carry3, sum3, ori);
-//                 console.log(carry3)
-//                 carry3num = [...carry1, ...carry2, ...carry3];
-//                 result.push(carry3num);
-
-
-//                 carry3 = [];
-//                 carry3num = [];
-//             }
-//             carry2 = [];
-
-//         }
-//         carry1 = [];
-//     }
-
-
-
-//     console.log(result)
-
-
-// }.
-function allCompilation2(arr) {
+function allCompilation(arr) {
     const ori = arr;
     const result = [];
     let carry3num = [];
-    let carry1 = [];
-    let carry2 = [];
-    let carry3 = [];
+    let carry1;
+    let carry2;
+    let carry3;
 
     for (let i = 0; i < ori.length; i++) {
-        loopPush(carry1, i, ori);
-        // console.log(carry1)
-        for (let j = 0; j < ori.length - 1; j++) {
+        carry1 = ori[i];
 
-            loopPush(carry2, j + i + 1, ori);
-
-            for (let k = 0; k < ori.length - 1; k++) {
-                loopPush(carry3, k + i + 2, ori);
-                carry3num = [...carry1, ...carry2, ...carry3];
-                result.push(carry3num);
-                carry1 = [];
-                carry2 = [];
-                carry3 = [];
-                carry3num = [];
+        for (let j = 0; j < ori.length; j++) {
+            if (j !== i) {
+                carry2 = ori[j];
+                for (let k = 0; k < ori.length; k++) {
+                    if (k !== j && k !== i) {
+                        carry3 = ori[k];
+                        carry3num = [carry1, carry2, carry3];
+                        result.push(carry3num);
+                        carry3num = [];
+                    }
+                }
             }
         }
-
     }
 
-    // console.log(carry1, carry2,carry3)
-
-    console.log(result)
-
+    return result;
 
 }
-allCompilation2([0, 1, 2, 3])
 
-function loopPush(carry, index, ori) {
-    if (index < ori.length) {
-        carry.push(ori[index]);
-    } else {
-        carry.push(ori[Math.abs(ori.length - index)]);
-    }
-}
 
+
+
+// threeSum([12,5,-12,4,-11,11,2,7,2,-5,-14,-3,-3,3,2,-10,9,-15,2,14,-3,-15,-3,-14,-1,-7,11,-4,-11,12,-15,-14,2,10,-2,-1,6,7,13,-15,-13,6,-10,-9,-14,7,-12,3,-1,5,2,11,6,14,12,-10,14,0,-7,11,-10,-7,4,-1,-12,-13,13,1,9,3,1,3,-5,6,9,-4,-2,5,14,12,-5,-6,1,8,-15,-10,5,-15,-2,5,3,3,13,-8,-13,8,-5,8,-6,11,-12,3,0,-2,-6,-14,2,0,6,1,-11,9,2,-3,-6,3,3,-15,-5,-14,5,13,-4,-4,-10,-10,11]); 
