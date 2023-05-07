@@ -24,7 +24,3 @@ function arrayInside(h) {
     }
     return result;
 }
-
-
-maxArea([8, 1, 6, 1])
-// pass 47
