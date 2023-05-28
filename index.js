@@ -1,30 +1,68 @@
-//11. Container With Most Water
+// * 'abc' =>  ['ab', 'c_']
+// * 'abcdef' => ['ab', 'cd', 'ef']
 
-const maxArea = function (height) {
-    let arrayInsideFn = arrayInside(height);
-    return Math.max(...arrayInsideFn);
-};
+function solution(str){
+   let becomeArr = strToArray(str);
+   let twinArr = twoArr(becomeArr);
+   let ans = compileArr(twinArr[0], twinArr[1]);
 
-function arrayInside(h) {
-    const result = [];
-    for (let i = 0; i < h.length; i++) {
-        for (let j = 1; j < h.length; j++) {
-            if (j < h.length && j > i) {
-                let arr = [h[i], h[j], (j - i)];
-                let x = arr[0];
-                let y = arr[1];
-                let z = arr[2];
-                if (x === y || y > x) {
-                    result.push(x * z);
-                } else {
-                    result.push(y * z);
-                } 
-            }
-        }
+   return ans;
+}
+
+// 'abc' => ['a', 'b', 'c']
+function strToArray(str) {
+  let arr = str.split('');
+  console.log(arr);
+  return arr;
+}
+
+// ['a', 'b', 'c'] => ['a', 'c'] & ['b']
+function twoArr(arr) {
+  let carry = true;
+  let arr1 = [];
+  let arr2 = [];
+  for(let i = 0; i < arr.length; i++) {
+    if(carry) {
+      arr1.push(arr[i]);
+      carry = false;
+    } else {
+      arr2.push(arr[i]);
+      carry = true;
     }
-    return result;
+  }
+
+  let result = [arr1, arr2];
+  console.log(result);
+  return result;
+}
+
+// ['a', 'c'] & ['b'] => ['ab', 'c']
+function compileArr(arr1, arr2) {
+
+  let result = [];
+
+  const toResult = (a, b) => {
+    for(let i = 0; i < a.length; i++) {
+      let A = a[i];
+      let B = b[i];
+      if(!A) {
+        A = '_';
+      }
+      if(!B) {
+        B = '_';
+      }
+      result.push(`${A}${B}`);
+    }
+    
+  }
+  
+  toResult(arr1, arr2);
+
+  console.log(result);
+  return result;
+
+
 }
 
 
-maxArea([8, 1, 6, 1])
-// pass 47
+
