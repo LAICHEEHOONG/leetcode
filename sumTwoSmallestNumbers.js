@@ -29,9 +29,11 @@ function removeOne(int, arr) {
 
 sumTwoSmallestNumbers([15, 28, 4, 2, 43])
 
-// let array = [1, 2, 3, 4, 5];
-// const indexToRemove = 2; // Index of the element to remove
+// function sumTwoSmallestNumbers(numbers) {
+//     const smallToBig = numbers.sort((a, b) => (a - b));
+//     const sum = smallToBig[0] + smallToBig[1];
+//     console.log(sum);
+//     return sum;
+// }
 
-// array.splice(indexToRemove, 1);
-
-// console.log(array); // Output: [1, 2, 4, 5]
+// sumTwoSmallestNumbers([5, 8, 12, 19, 22])
